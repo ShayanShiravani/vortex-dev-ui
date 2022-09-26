@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  compiler: {
+    styledComponents: true,
+  },
+  reactStrictMode: false, // useEffect runs twice  in this mode 
   swcMinify: true,
 }
 
