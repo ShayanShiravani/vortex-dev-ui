@@ -24,7 +24,7 @@ export const getRoomsList = async (): Promise<string[]> => {
 
 export const addRoom = async (name: string): Promise<boolean> => {
   try {
-    let { data } = await axios.post<LIVEKIT_BACKEND_RESPONSE>(LIVEKIT_BACKEND_URL + "/create", {
+    let { data } = await axios.post<LIVEKIT_BACKEND_RESPONSE>(LIVEKIT_BACKEND_URL + "create", {
       room: name
     })
     if(data.success) {
@@ -41,7 +41,7 @@ export const addRoom = async (name: string): Promise<boolean> => {
 
 export const joinRoom = async (room: string, username: string): Promise<string|null> => {
   try {
-    let { data } = await axios.post<LIVEKIT_BACKEND_RESPONSE>(LIVEKIT_BACKEND_URL + "/join", {
+    let { data } = await axios.post<LIVEKIT_BACKEND_RESPONSE>(LIVEKIT_BACKEND_URL + "join", {
       room: room,
       participant: username
     })
