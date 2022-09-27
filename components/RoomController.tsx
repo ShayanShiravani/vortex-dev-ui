@@ -36,16 +36,18 @@ const RoomController: React.FC<RoomControllerProps> = (props) => {
   return (
     <Card>
       <div className="flex items-stretch">
-        <AudioSelectButton
-          isMuted={!audioEnabled}
-          className="rounded-l-lg bg-blue-200 px-2 leading-10"
-          popoverTriggerBtnClassName="rounded-r-lg bg-blue-200 px-2 leading-10"
-          popoverContainerClassName="z-1000 cursor-pointer rounded-lg bg-slate-500 
-          text-white mb-1 ml-4 p-2"
-          onClick={toggleAudio}
-          // onSourceSelected={setAudioDevice}
-        />
-        <div className="ml-2 w-30">
+        <div className="w-30 text-sm lg:text-lg">
+          <AudioSelectButton
+            isMuted={!audioEnabled}
+            className="rounded-l-lg bg-blue-200 px-2 leading-10"
+            popoverTriggerBtnClassName="rounded-r-lg bg-blue-200 px-2 leading-10"
+            popoverContainerClassName="z-1000 cursor-pointer rounded-lg bg-slate-500 
+            text-white mb-1 ml-4 p-2"
+            onClick={toggleAudio}
+            // onSourceSelected={setAudioDevice}
+          />
+        </div>
+        <div className="ml-2 w-25 text-sm lg:w-30 lg:text-lg">
             <button
               className="rounded-xl bg-orange-500 text-white px-2 leading-10 w-full"
               // onClick={connectToRoom}
@@ -53,7 +55,7 @@ const RoomController: React.FC<RoomControllerProps> = (props) => {
               End Speaking
             </button>
         </div>
-        <div className="ml-2 w-30">
+        <div className="ml-2 w-25 text-sm lg:w-30 lg:text-lg">
             <button
               className="rounded-xl bg-red-500 text-white px-2 leading-10 w-full"
               onClick={leaveRoom}
