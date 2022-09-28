@@ -96,19 +96,19 @@ const JoinRoom: React.FC = () => {
           <b className="ml-3 text-black">{selectedRoom}</b>
         </div>
       </div>
-      <div className="mb-5">
+      <div className="mb-5 text-sm">
         <input
           type="text"
           name="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           className="rounded-lg border-solid border-2 border-sky-300 
-          outline-none leading-loose w-full px-2"
+          outline-none leading-10 w-full px-2"
           placeholder="Insert username..."
           autoFocus={true}
         />
       </div>
-      <div className="flex items-stretch">
+      <div className="flex text-sm items-stretch">
         <div className="mr-2 w-20">
           <button
             className="rounded-lg bg-blue-200 px-2 leading-10 w-full"

@@ -13,21 +13,21 @@ const CreateRoom: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center mb-3">
+      <div className="flex flex-col items-center mb-3 text-sm">
         <input
           type="text"
           name="room-name"
           value={room}
           onChange={(e) => setRoom(e.target.value)}
           className="rounded-lg border-solid border-2 border-sky-300 
-          outline-none leading-loose w-60 px-2"
+          outline-none leading-10 w-60 px-2"
           placeholder="Insert name..."
           autoFocus={true}
         />
       </div>
       <div className="flex flex-col items-center mb-3">
         <button
-          className="rounded-lg bg-blue-200 w-60 px-2 leading-10"
+          className="rounded-lg bg-blue-200 w-60 px-2 leading-10 text-sm"
           onClick={() => newRoom(room)}
         >
           Create
