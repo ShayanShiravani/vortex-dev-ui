@@ -37,6 +37,19 @@ const Room: NextPage = () => {
           }
         })
         .on(RoomEvent.RoomMetadataChanged, handleRoomMetadataChanged)
+        .on(RoomEvent.ParticipantMetadataChanged, () => {
+          console.log("Metadata:", localParticipant.metadata)
+          if(localParticipant.metadata && localParticipant.metadata.length > 0) {
+            const metadata = JSON.parse(localParticipant.metadata)
+            if(metadata.no == 1) {
+              console.log("I'm room leader")
+              window.setInterval(() => {
+                console.log("Request to change turn")
+                changeTurn(room.name)
+              }, 10000)
+            }
+          }
+        })
     }
   }, []) //eslint-disable-line
 
@@ -50,17 +63,6 @@ const Room: NextPage = () => {
       const audioDeviceId = query.audioDeviceId
       if (audioDeviceId && options.audioCaptureDefaults) {
         options.audioCaptureDefaults.deviceId = audioDeviceId;
-      }
-    }
-    console.log(localParticipant.metadata)
-    if(localParticipant.metadata && localParticipant.metadata.length > 0) {
-      const metadata = JSON.parse(localParticipant.metadata)
-      if(metadata.no == 1) {
-        console.log("I'm room leader")
-        window.setInterval(() => {
-          console.log("Request to change turn")
-          changeTurn(room.name)
-        }, 10000)
       }
     }
   }
