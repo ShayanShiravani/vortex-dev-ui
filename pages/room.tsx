@@ -15,7 +15,7 @@ const Room: NextPage = () => {
   const token = query.token as string
   const { room } = useRoom()
   const [roomName, setRoomName] = useState<string>("")
-  let intervalId: number
+  const [intervalId, setIntervalId] = useState<number|undefined>(undefined)
 
   useEffect(() => {
     if (!url || !token) {
@@ -60,10 +60,11 @@ const Room: NextPage = () => {
           const metadata = JSON.parse(localParticipant.metadata)
           if(metadata.no == 1) {
             console.log("I'm room leader")
-            intervalId = window.setInterval(() => {
+            const intervalId = window.setInterval(() => {
               console.log("Request to change turn")
               changeTurn(room.name)
             }, 10000)
+            setIntervalId(intervalId)
           }
         }
       })
