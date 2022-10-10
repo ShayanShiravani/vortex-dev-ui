@@ -48,8 +48,10 @@ const Room: NextPage = () => {
     }
 
     room
-      .on(RoomEvent.ParticipantPermissionsChanged, () => {
-        if (localParticipant.permissions?.canPublish) {
+      .on(RoomEvent.ParticipantPermissionsChanged, (prevPermissions, participant) => {
+        console.log("Can publish:", localParticipant.permissions?.canPublish)
+        if (participant.identity == localParticipant.identity && 
+          localParticipant.permissions?.canPublish) {
           localParticipant.setMicrophoneEnabled(true)
         }
       })
