@@ -25,33 +25,13 @@ const Room: NextPage = () => {
     if (room) {
       let { localParticipant } = room
       localParticipant.setCameraEnabled(false)
-
-      const handleRoomMetadataChanged = () => {
-        console.log(JSON.parse(room.metadata||"{}"))
-      }
-
-      room
-        .on(RoomEvent.ParticipantPermissionsChanged, () => {
-          if (localParticipant.permissions?.canPublish) {
-            localParticipant.setMicrophoneEnabled(true)
-          }
-        })
-        .on(RoomEvent.RoomMetadataChanged, handleRoomMetadataChanged)
-        .on(RoomEvent.ParticipantMetadataChanged, () => {
-          console.log("Metadata:", localParticipant.metadata)
-          if(localParticipant.metadata && localParticipant.metadata.length > 0) {
-            const metadata = JSON.parse(localParticipant.metadata)
-            if(metadata.no == 1) {
-              console.log("I'm room leader")
-              window.setInterval(() => {
-                console.log("Request to change turn")
-                changeTurn(room.name)
-              }, 10000)
-            }
-          }
-        })
     }
   }, []) //eslint-disable-line
+
+
+  const handleRoomMetadataChanged = (metadata: string) => {
+    console.log(JSON.parse(metadata||"{}"))
+  }
 
   const onConnected = (room: LivekitRoom) => {
     setRoomName(room.name)
@@ -65,6 +45,27 @@ const Room: NextPage = () => {
         options.audioCaptureDefaults.deviceId = audioDeviceId;
       }
     }
+
+    room
+      .on(RoomEvent.ParticipantPermissionsChanged, () => {
+        if (localParticipant.permissions?.canPublish) {
+          localParticipant.setMicrophoneEnabled(true)
+        }
+      })
+      .on(RoomEvent.RoomMetadataChanged, handleRoomMetadataChanged)
+      .on(RoomEvent.ParticipantMetadataChanged, () => {
+        console.log("Metadata:", localParticipant.metadata)
+        if(localParticipant.metadata && localParticipant.metadata.length > 0) {
+          const metadata = JSON.parse(localParticipant.metadata)
+          if(metadata.no == 1) {
+            console.log("I'm room leader")
+            window.setInterval(() => {
+              console.log("Request to change turn")
+              changeTurn(room.name)
+            }, 10000)
+          }
+        }
+      })
   }
 
   return (
