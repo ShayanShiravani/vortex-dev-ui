@@ -3,7 +3,7 @@ import { Room as LivekitRoom, RoomEvent } from 'livekit-client';
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Router, { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import RoomController from '../components/RoomController';
 import { changeTurn } from '../utils/livekit/api';
 
@@ -70,6 +70,14 @@ const Room: NextPage = () => {
       })
   }
 
+  const onLeave = useCallback(() => {
+    console.log("intervalId:", intervalId)
+    if(intervalId) {
+      console.log("Clear interval")
+      clearInterval(intervalId)
+    }
+  }, [intervalId])
+
   return (
     <div>
       <Head>
@@ -99,15 +107,10 @@ const Room: NextPage = () => {
                     <RoomController
                       room={room}
                       enableAudio={query.audioEnabled === '1'}
+                      onLeave={onLeave}
                     />
                   )}
-                  onLeave={() => {
-                    console.log("intervalId:", intervalId)
-                    if(intervalId) {
-                      console.log("Clear interval")
-                      clearInterval(intervalId)
-                    }
-                  }}
+                  // onLeave={}
                 />
               </div>
             </div>

@@ -6,12 +6,13 @@ import Router from 'next/router'
 
 interface RoomControllerProps {
   room: Room,
-  enableAudio: boolean | undefined
+  enableAudio: boolean | undefined,
+  onLeave?:any
 }
 
 const RoomController: React.FC<RoomControllerProps> = (props) => {
   
-  const { room, enableAudio } = props
+  const { room, enableAudio, onLeave } = props
   const [audioEnabled, setAudioEnabled] = useState<boolean>(enableAudio as boolean)
 
   const toggleAudio = () => {
@@ -30,6 +31,9 @@ const RoomController: React.FC<RoomControllerProps> = (props) => {
 
   const leaveRoom = () => {
     room.disconnect()
+    if(onLeave) {
+      onLeave()
+    }
     Router.push("/")
   }
 
