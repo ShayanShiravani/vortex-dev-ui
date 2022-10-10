@@ -51,26 +51,26 @@ const Room: NextPage = () => {
     room
       .on(RoomEvent.ParticipantPermissionsChanged, (prevPermissions, participant) => {
         console.log("Can publish:", localParticipant.permissions?.canPublish)
-        if (
-          participant.identity == localParticipant.identity
-        ) {
-          if(
-            localParticipant.permissions?.canPublish && 
-            !localParticipant.isMicrophoneEnabled
-          ) {
-            console.log("Enable microphone")
-            localParticipant.setMicrophoneEnabled(true)
-          } else if (
-            !localParticipant.permissions?.canPublish
-          ) {
-            console.log("Disable microphone")
-            localParticipant.setMicrophoneEnabled(false)
-          }
-        }
+        // if (
+        //   participant.identity == localParticipant.identity
+        // ) {
+        //   if(
+        //     localParticipant.permissions?.canPublish && 
+        //     !localParticipant.isMicrophoneEnabled
+        //   ) {
+        //     console.log("Enable microphone")
+        //     localParticipant.setMicrophoneEnabled(true)
+        //   } else if (
+        //     !localParticipant.permissions?.canPublish
+        //   ) {
+        //     console.log("Disable microphone")
+        //     localParticipant.setMicrophoneEnabled(false)
+        //   }
+        // }
       })
       .on(RoomEvent.RoomMetadataChanged, handleRoomMetadataChanged)
       .on(RoomEvent.ParticipantMetadataChanged, (metadata, participant) => {
-        console.log("Metadata:", metadata)
+        console.log("Metadata:", localParticipant.metadata)
         if(participant.identity == localParticipant.identity && 
           localParticipant.metadata && localParticipant.metadata.length > 0) {
           const parsedMetadata = JSON.parse(localParticipant.metadata)
@@ -81,6 +81,11 @@ const Room: NextPage = () => {
               changeTurn(room.name)
             }, 10000)
             setIntervalId(changeTurnIntervalId)
+          }
+          if(parsedMetadata.canPublish) {
+            localParticipant.setMicrophoneEnabled(true)
+          } else {
+            localParticipant.setMicrophoneEnabled(false)
           }
         }
       })
