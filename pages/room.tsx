@@ -54,17 +54,18 @@ const Room: NextPage = () => {
         }
       })
       .on(RoomEvent.RoomMetadataChanged, handleRoomMetadataChanged)
-      .on(RoomEvent.ParticipantMetadataChanged, () => {
-        console.log("Metadata:", localParticipant.metadata)
-        if(localParticipant.metadata && localParticipant.metadata.length > 0) {
-          const metadata = JSON.parse(localParticipant.metadata)
-          if(metadata.no == 1 && !intervalId) {
+      .on(RoomEvent.ParticipantMetadataChanged, (metadata, participant) => {
+        console.log("Metadata:", metadata)
+        if(participant.identity == localParticipant.identity && 
+          metadata && metadata.length > 0) {
+          const parsedMetadata = JSON.parse(metadata)
+          if(parsedMetadata.no == 1 && !intervalId) {
             console.log("I'm room leader")
-            const intervalId = window.setInterval(() => {
+            const changeTurnIntervalId = window.setInterval(() => {
               console.log("Request to change turn")
               changeTurn(room.name)
             }, 10000)
-            setIntervalId(intervalId)
+            setIntervalId(changeTurnIntervalId)
           }
         }
       })
