@@ -56,3 +56,19 @@ export const joinRoom = async (room: string, username: string): Promise<string|n
   }
   return null
 }
+
+export const changeTurn = async (room: string): Promise<boolean> => {
+  try {
+    let { data } = await axios.post<LIVEKIT_BACKEND_RESPONSE>(LIVEKIT_BACKEND_URL + "change-turn", {
+      room: room
+    })
+    if(data.success) {
+      return true
+    } else {
+      console.log(data.message)
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+  return false
+}

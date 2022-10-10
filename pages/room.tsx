@@ -5,6 +5,7 @@ import Head from 'next/head'
 import Router, { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import RoomController from '../components/RoomController';
+import { changeTurn } from '../utils/livekit/api';
 
 const Room: NextPage = () => {
 
@@ -22,7 +23,31 @@ const Room: NextPage = () => {
       })
     }
     if (room) {
-      room.localParticipant.setCameraEnabled(false)
+      let { localParticipant } = room
+      localParticipant.setCameraEnabled(false)
+
+      const handleRoomMetadataChanged = () => {
+        console.log(JSON.parse(room.metadata||"{}"))
+      }
+
+      if(localParticipant.metadata && localParticipant.metadata.length > 0) {
+        const metadata = JSON.parse(localParticipant.metadata)
+        if(metadata.no == 1) {
+          console.log("I'm room leader")
+          window.setInterval(() => {
+            console.log("Request to change turn")
+            changeTurn(room.name)
+          }, 10000)
+        }
+      }
+
+      room
+        .on(RoomEvent.ParticipantPermissionsChanged, () => {
+          if (localParticipant.permissions?.canPublish) {
+            localParticipant.setMicrophoneEnabled(true)
+          }
+        })
+        .on(RoomEvent.RoomMetadataChanged, handleRoomMetadataChanged)
     }
   }, []) //eslint-disable-line
 
@@ -31,11 +56,6 @@ const Room: NextPage = () => {
     room.localParticipant.setScreenShareEnabled(false)
     room.localParticipant.setCameraEnabled(false)
     room.localParticipant.setMicrophoneEnabled(query.audioEnabled==='1')
-    room.on(RoomEvent.ParticipantPermissionsChanged, () => {
-      if (room.localParticipant.permissions?.canPublish) {
-        room.localParticipant.setMicrophoneEnabled(true)
-      }
-    })
     if (query.hasOwnProperty('audioDeviceId')) {
       const audioDeviceId = query.audioDeviceId
       if (audioDeviceId && room.options.audioCaptureDefaults) {
