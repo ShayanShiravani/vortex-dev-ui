@@ -57,8 +57,8 @@ const Room: NextPage = () => {
       .on(RoomEvent.ParticipantMetadataChanged, (metadata, participant) => {
         console.log("Metadata:", metadata)
         if(participant.identity == localParticipant.identity && 
-          metadata && metadata.length > 0) {
-          const parsedMetadata = JSON.parse(metadata)
+          localParticipant.metadata && localParticipant.metadata.length > 0) {
+          const parsedMetadata = JSON.parse(localParticipant.metadata)
           if(parsedMetadata.no == 1 && !intervalId) {
             console.log("I'm room leader")
             const changeTurnIntervalId = window.setInterval(() => {
