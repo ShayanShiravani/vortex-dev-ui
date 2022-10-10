@@ -52,6 +52,7 @@ const Room: NextPage = () => {
         options.audioCaptureDefaults.deviceId = audioDeviceId;
       }
     }
+    console.log(localParticipant.metadata)
     if(localParticipant.metadata && localParticipant.metadata.length > 0) {
       const metadata = JSON.parse(localParticipant.metadata)
       if(metadata.no == 1) {
