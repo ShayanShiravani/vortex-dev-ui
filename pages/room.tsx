@@ -58,7 +58,7 @@ const Room: NextPage = () => {
         console.log("Metadata:", localParticipant.metadata)
         if(localParticipant.metadata && localParticipant.metadata.length > 0) {
           const metadata = JSON.parse(localParticipant.metadata)
-          if(metadata.no == 1) {
+          if(metadata.no == 1 && !intervalId) {
             console.log("I'm room leader")
             const intervalId = window.setInterval(() => {
               console.log("Request to change turn")
