@@ -15,6 +15,7 @@ const Room: NextPage = () => {
   const token = query.token as string
   const { room } = useRoom()
   const [roomName, setRoomName] = useState<string>("")
+  let intervalId: number
 
   useEffect(() => {
     if (!url || !token) {
@@ -59,7 +60,7 @@ const Room: NextPage = () => {
           const metadata = JSON.parse(localParticipant.metadata)
           if(metadata.no == 1) {
             console.log("I'm room leader")
-            window.setInterval(() => {
+            intervalId = window.setInterval(() => {
               console.log("Request to change turn")
               changeTurn(room.name)
             }, 10000)
@@ -99,7 +100,12 @@ const Room: NextPage = () => {
                       enableAudio={query.audioEnabled === '1'}
                     />
                   )}
-                // onLeave={onLeave}
+                  onLeave={() => {
+                    if(intervalId) {
+                      console.log("Clear interval")
+                      clearInterval(intervalId)
+                    }
+                  }}
                 />
               </div>
             </div>
