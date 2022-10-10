@@ -1,5 +1,5 @@
 import { LiveKitRoom, useRoom } from '@livekit/react-components'
-import { Room as LivekitRoom, RoomEvent } from 'livekit-client';
+import { Room as LivekitRoom, RoomEvent, setLogLevel } from 'livekit-client';
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Router, { useRouter } from 'next/router'
@@ -35,6 +35,7 @@ const Room: NextPage = () => {
   }
 
   const onConnected = (room: LivekitRoom) => {
+    setLogLevel('debug')
     setRoomName(room.name)
     let { localParticipant, options } = room
     localParticipant.setScreenShareEnabled(false)
