@@ -30,17 +30,6 @@ const Room: NextPage = () => {
         console.log(JSON.parse(room.metadata||"{}"))
       }
 
-      if(localParticipant.metadata && localParticipant.metadata.length > 0) {
-        const metadata = JSON.parse(localParticipant.metadata)
-        if(metadata.no == 1) {
-          console.log("I'm room leader")
-          window.setInterval(() => {
-            console.log("Request to change turn")
-            changeTurn(room.name)
-          }, 10000)
-        }
-      }
-
       room
         .on(RoomEvent.ParticipantPermissionsChanged, () => {
           if (localParticipant.permissions?.canPublish) {
@@ -53,13 +42,24 @@ const Room: NextPage = () => {
 
   const onConnected = (room: LivekitRoom) => {
     setRoomName(room.name)
-    room.localParticipant.setScreenShareEnabled(false)
-    room.localParticipant.setCameraEnabled(false)
-    room.localParticipant.setMicrophoneEnabled(query.audioEnabled==='1')
+    let { localParticipant, options } = room
+    localParticipant.setScreenShareEnabled(false)
+    localParticipant.setCameraEnabled(false)
+    localParticipant.setMicrophoneEnabled(query.audioEnabled==='1')
     if (query.hasOwnProperty('audioDeviceId')) {
       const audioDeviceId = query.audioDeviceId
-      if (audioDeviceId && room.options.audioCaptureDefaults) {
-        room.options.audioCaptureDefaults.deviceId = audioDeviceId;
+      if (audioDeviceId && options.audioCaptureDefaults) {
+        options.audioCaptureDefaults.deviceId = audioDeviceId;
+      }
+    }
+    if(localParticipant.metadata && localParticipant.metadata.length > 0) {
+      const metadata = JSON.parse(localParticipant.metadata)
+      if(metadata.no == 1) {
+        console.log("I'm room leader")
+        window.setInterval(() => {
+          console.log("Request to change turn")
+          changeTurn(room.name)
+        }, 10000)
       }
     }
   }
