@@ -102,6 +102,7 @@ const Room: NextPage = () => {
                     />
                   )}
                   onLeave={() => {
+                    console.log("intervalId:", intervalId)
                     if(intervalId) {
                       console.log("Clear interval")
                       clearInterval(intervalId)
