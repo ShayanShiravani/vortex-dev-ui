@@ -3,6 +3,7 @@ import { AudioSelectButton } from '@livekit/react-components'
 import { Room } from 'livekit-client'
 import Card from "./Card"
 import Router from 'next/router'
+import { skipTurn } from "../utils/livekit/api"
 
 interface RoomControllerProps {
   room: Room,
@@ -25,8 +26,8 @@ const RoomController: React.FC<RoomControllerProps> = (props) => {
     }
   }
 
-  const endSpeaking = () => {
-    
+  const endSpeaking = async () => {
+    skipTurn(room.name, room.localParticipant.identity)
   }
 
   const leaveRoom = () => {
@@ -54,7 +55,7 @@ const RoomController: React.FC<RoomControllerProps> = (props) => {
         <div>
             <button
               className="rounded-xl bg-orange-500 text-white px-2 leading-10 w-full"
-              // onClick={connectToRoom}
+              onClick={endSpeaking}
             >
               End Speaking
             </button>

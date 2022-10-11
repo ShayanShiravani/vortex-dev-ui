@@ -72,3 +72,20 @@ export const changeTurn = async (room: string): Promise<boolean> => {
   }
   return false
 }
+
+export const skipTurn = async (room: string, identity: string): Promise<boolean> => {
+  try {
+    let { data } = await axios.post<LIVEKIT_BACKEND_RESPONSE>(LIVEKIT_BACKEND_URL + "skip-turn", {
+      room: room,
+      identity: identity
+    })
+    if(data.success) {
+      return true
+    } else {
+      console.log(data.message)
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+  return false
+}
